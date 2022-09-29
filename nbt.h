@@ -132,6 +132,12 @@ public:
 
     TagList(std::istream& is);
 
+    template<typename T>
+    const std::vector<T>& as_list_of() requires detail::Is_tag_type<T>
+    {
+        return std::get<std::vector<T>>(*this);
+    }
+
     void encode(std::ostream& os) const;
     void decode(std::istream& is);
 
@@ -158,7 +164,7 @@ public:
     template<typename T>
     const std::vector<T>& as_list_of() requires detail::Is_tag_type<T>
     {
-        return std::get<std::vector<T>>(*this);
+        return std::get<nbt::TagList>(*this).as_list_of<T>();
     }
 
     void encode(std::ostream& os) const;
