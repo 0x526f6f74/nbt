@@ -133,7 +133,13 @@ public:
     TagList(std::istream& is);
 
     template<typename T>
-    const std::vector<T>& as_list_of() requires detail::Is_tag_type<T>
+    std::vector<T>& as_list_of() requires detail::Is_tag_type<T>
+    {
+        return std::get<std::vector<T>>(*this);
+    }
+
+    template<typename T>
+    const std::vector<T>& as_list_of() const requires detail::Is_tag_type<T>
     {
         return std::get<std::vector<T>>(*this);
     }
@@ -156,13 +162,25 @@ public:
     Tag(std::istream& is, TagType type);
 
     template<typename T>
-    const T& as() requires detail::Is_tag_type<T>
+    T& as() requires detail::Is_tag_type<T>
     {
         return std::get<T>(*this);
     }
 
     template<typename T>
-    const std::vector<T>& as_list_of() requires detail::Is_tag_type<T>
+    const T& as() const requires detail::Is_tag_type<T>
+    {
+        return std::get<T>(*this);
+    }
+
+    template<typename T>
+    std::vector<T>& as_list_of() requires detail::Is_tag_type<T>
+    {
+        return std::get<nbt::TagList>(*this).as_list_of<T>();
+    }
+
+    template<typename T>
+    const std::vector<T>& as_list_of() const requires detail::Is_tag_type<T>
     {
         return std::get<nbt::TagList>(*this).as_list_of<T>();
     }
