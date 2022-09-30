@@ -248,4 +248,9 @@ Tag& NBT::operator[](const TagString& key)
     return std::get<TagCompound>(this->data->tags)[key];
 }
 
+std::optional<NBTData>& NBT::get_data()
+{
+    return this->data;
+}
+
 }  // namespace nbt

@@ -132,12 +132,6 @@ public:
 
     TagList(std::istream& is);
 
-    template<typename T>
-    std::vector<T>& as_list_of() requires detail::Is_tag_type<T>
-    {
-        return std::get<std::vector<T>>(*this);
-    }
-
     void encode(std::ostream& os) const;
     void decode(std::istream& is);
 
@@ -154,18 +148,6 @@ public:
     using variant::variant;
 
     Tag(std::istream& is, TagType type);
-
-    template<typename T>
-    T& as() requires detail::Is_tag_type<T>
-    {
-        return std::get<T>(*this);
-    }
-
-    template<typename T>
-    std::vector<T>& as_list_of() requires detail::Is_tag_type<T>
-    {
-        return std::get<nbt::TagList>(*this).as_list_of<T>();
-    }
 
     void encode(std::ostream& os) const;
     void decode(std::istream& is, TagType type);
@@ -194,6 +176,8 @@ public:
     Tag& operator[](int index) requires detail::Is_tag_type<T>;
 
     Tag& operator[](const TagString& key);
+
+    std::optional<NBTData>& get_data();
 
 private:
     std::optional<NBTData> data;
