@@ -160,6 +160,8 @@ public:
 
     Tag(std::istream& is, TagType type);
 
+    Tag& operator[](const TagString& key);
+
     void encode(std::ostream& os) const;
     void decode(std::istream& is, TagType type);
 };
@@ -182,16 +184,12 @@ public:
     void decode(std::istream&& is);
 
     const TagString& name() const;
-
-    template<typename T>
-    Tag& operator[](int index) requires detail::Is_tag_type<T>;
+    std::optional<NBTData>& data();
 
     Tag& operator[](const TagString& key);
 
-    std::optional<NBTData>& get_data();
-
 private:
-    std::optional<NBTData> data;
+    std::optional<NBTData> data_;
 };
 
 }  // namespace nbt

@@ -158,6 +158,11 @@ Tag::Tag(std::istream& is, TagType type)
     this->decode(is, type);
 }
 
+Tag& Tag::operator[](const TagString& key)
+{
+    return std::get<TagCompound>(*this)[key];
+}
+
 void Tag::encode(std::ostream& os) const
 {
     const auto encoder = [&](const auto& value) { detail::encode(os, value); };
@@ -197,18 +202,18 @@ NBT::NBT(std::istream&& is)
 
 void NBT::encode(std::ostream& os) const
 {
-    if (this->data)
+    if (this->data_)
     {
-        if (const auto tags = std::get_if<TagCompound>(&this->data->tags))
+        if (const auto tags = std::get_if<TagCompound>(&this->data_->tags))
         {
             detail::encode<TagByte>(os, TAG_COMPOUND);
-            detail::encode(os, this->data->name);
+            detail::encode(os, this->data_->name);
             detail::encode(os, *tags);
         }
-        else if (const auto tags = std::get_if<TagList>(&this->data->tags))
+        else if (const auto tags = std::get_if<TagList>(&this->data_->tags))
         {
             detail::encode<TagByte>(os, TAG_LIST);
-            detail::encode(os, this->data->name);
+            detail::encode(os, this->data_->name);
             detail::encode(os, *tags);
         }
         else
@@ -228,9 +233,9 @@ void NBT::decode(std::istream& is)
     const auto type = detail::decode<TagByte>(is);
 
     if (type == TAG_COMPOUND)
-        this->data = NBTData {detail::decode<TagString>(is), detail::decode<TagCompound>(is)};
+        this->data_ = NBTData {detail::decode<TagString>(is), detail::decode<TagCompound>(is)};
     else if (type == TAG_LIST)
-        this->data = NBTData {detail::decode<TagString>(is), detail::decode<TagList>(is)};
+        this->data_ = NBTData {detail::decode<TagString>(is), detail::decode<TagList>(is)};
     else
         throw invalid_tag_type {};
 }
@@ -242,23 +247,17 @@ void NBT::decode(std::istream&& is)
 
 const TagString& NBT::name() const
 {
-    return this->data->name;
+    return this->data_->name;
 }
 
-template<typename T>
-Tag& NBT::operator[](int index) requires detail::Is_tag_type<T>
+std::optional<NBTData>& NBT::data()
 {
-    return std::get<std::vector<T>>(std::get<TagList>(this->data->tags))[index];
+    return this->data_;
 }
 
 Tag& NBT::operator[](const TagString& key)
 {
-    return std::get<TagCompound>(this->data->tags)[key];
-}
-
-std::optional<NBTData>& NBT::get_data()
-{
-    return this->data;
+    return std::get<TagCompound>(this->data_->tags)[key];
 }
 
 }  // namespace nbt
