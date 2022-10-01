@@ -158,11 +158,6 @@ Tag::Tag(std::istream& is, TagType type)
     this->decode(is, type);
 }
 
-Tag& Tag::operator[](const TagString& key)
-{
-    return std::get<TagCompound>(*this)[key];
-}
-
 void Tag::encode(std::ostream& os) const
 {
     const auto encoder = [&](const auto& value) { detail::encode(os, value); };
@@ -188,6 +183,11 @@ void Tag::decode(std::istream& is, TagType type)
         case TAG_LONG_ARRAY: *this = detail::decode<TagLongArray>(is); break;
         default: throw invalid_tag_type {};
     }
+}
+
+Tag& Tag::operator[](const TagString& key)
+{
+    return std::get<TagCompound>(*this)[key];
 }
 
 NBT::NBT(std::istream& is)

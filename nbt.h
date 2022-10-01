@@ -160,10 +160,10 @@ public:
 
     Tag(std::istream& is, TagType type);
 
-    Tag& operator[](const TagString& key);
-
     void encode(std::ostream& os) const;
     void decode(std::istream& is, TagType type);
+
+    Tag& operator[](const TagString& key);
 };
 
 struct NBTData
