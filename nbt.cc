@@ -190,6 +190,26 @@ Tag& Tag::operator[](const TagString& key)
     return std::get<TagCompound>(*this)[key];
 }
 
+template<typename T>
+T& Tag::at(int index) requires detail::Is_tag_type<T>
+{
+    return std::get<std::vector<T>>(std::get<TagList>(*this))[index];
+}
+
+template TagEnd& Tag::at(int index);
+template TagByte& Tag::at(int index);
+template TagShort& Tag::at(int index);
+template TagInt& Tag::at(int index);
+template TagLong& Tag::at(int index);
+template TagFloat& Tag::at(int index);
+template TagDouble& Tag::at(int index);
+template TagByteArray& Tag::at(int index);
+template TagString& Tag::at(int index);
+template TagList& Tag::at(int index);
+template TagCompound& Tag::at(int index);
+template TagIntArray& Tag::at(int index);
+template TagLongArray& Tag::at(int index);
+
 NBT::NBT(std::istream& is)
 {
     this->decode(is);

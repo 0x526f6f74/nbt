@@ -164,6 +164,9 @@ public:
     void decode(std::istream& is, TagType type);
 
     Tag& operator[](const TagString& key);
+
+    template<typename T>
+    T& at(int index) requires detail::Is_tag_type<T>;
 };
 
 struct NBTData
