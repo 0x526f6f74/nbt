@@ -3,6 +3,21 @@
 namespace nbt
 {
 
+class invalid_tag_type : public std::exception
+{
+public:
+    invalid_tag_type() noexcept
+    { }
+
+    virtual const char* what() const noexcept override
+    {
+        return this->reason;
+    }
+
+private:
+    const char* reason = "invalid tag type";
+};
+
 namespace detail
 {
 
@@ -132,7 +147,7 @@ void TagList::decode(std::istream& is)
         case TAG_COMPOUND: *this = this->decode_vector<TagCompound>(is); break;
         case TAG_INT_ARRAY: *this = this->decode_vector<TagIntArray>(is); break;
         case TAG_LONG_ARRAY: *this = this->decode_vector<TagLongArray>(is); break;
-        default: throw std::runtime_error {"invalid tag type"};
+        default: throw invalid_tag_type {};
     }
 }
 
@@ -173,7 +188,7 @@ void Tag::decode(std::istream& is, TagType type)
         case TAG_COMPOUND: *this = detail::decode<TagCompound>(is); break;
         case TAG_INT_ARRAY: *this = detail::decode<TagIntArray>(is); break;
         case TAG_LONG_ARRAY: *this = detail::decode<TagLongArray>(is); break;
-        default: throw std::runtime_error {"invalid tag type"};
+        default: throw invalid_tag_type {};
     }
 }
 
@@ -204,7 +219,7 @@ void NBT::encode(std::ostream& os) const
             detail::encode(os, *tags);
         }
         else
-            throw std::runtime_error {"invalid tag type"};
+            throw invalid_tag_type {};
     }
     else
         detail::encode<TagEnd>(os);
@@ -224,7 +239,7 @@ void NBT::decode(std::istream& is)
     else if (type == TAG_LIST)
         this->data = NBTData {detail::decode<TagString>(is), detail::decode<TagList>(is)};
     else
-        throw std::runtime_error {"invalid tag type"};
+        throw invalid_tag_type {};
 }
 
 void NBT::decode(std::istream&& is)
