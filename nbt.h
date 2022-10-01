@@ -120,7 +120,7 @@ public:
     virtual const char* what() const noexcept override;
 
 private:
-    static constexpr char* reason = "invalid tag type";
+    static constexpr const char* reason = "invalid tag type";
 };
 
 class TagList : public std::variant<
