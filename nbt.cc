@@ -3,21 +3,6 @@
 namespace nbt
 {
 
-class invalid_tag_type : public std::exception
-{
-public:
-    invalid_tag_type() noexcept
-    { }
-
-    virtual const char* what() const noexcept override
-    {
-        return this->reason;
-    }
-
-private:
-    const char* reason = "invalid tag type";
-};
-
 namespace detail
 {
 
@@ -112,6 +97,14 @@ T decode(std::istream& is)
 }
 
 }  // namespace detail
+
+invalid_tag_type::invalid_tag_type() noexcept
+{ }
+
+const char* invalid_tag_type::what() const noexcept
+{
+    return this->reason;
+}
 
 TagList::TagList(std::istream& is)
 {

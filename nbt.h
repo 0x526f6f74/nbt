@@ -112,6 +112,17 @@ T decode(std::istream& is);
 
 }  // namespace detail
 
+class invalid_tag_type : public std::exception
+{
+public:
+    invalid_tag_type() noexcept;
+
+    virtual const char* what() const noexcept override;
+
+private:
+    static constexpr char* reason = "invalid tag type";
+};
+
 class TagList : public std::variant<
                     std::vector<TagEnd>,
                     std::vector<TagByte>,
