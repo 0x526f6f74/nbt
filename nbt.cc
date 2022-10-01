@@ -191,13 +191,13 @@ void NBT::encode(std::ostream& os) const
 {
     if (this->data)
     {
-        if (const auto& tags = std::get_if<TagCompound>(&this->data->tags))
+        if (const auto tags = std::get_if<TagCompound>(&this->data->tags))
         {
             detail::encode<TagByte>(os, TAG_COMPOUND);
             detail::encode(os, this->data->name);
             detail::encode(os, *tags);
         }
-        else if (const auto& tags = std::get_if<TagList>(&this->data->tags))
+        else if (const auto tags = std::get_if<TagList>(&this->data->tags))
         {
             detail::encode<TagByte>(os, TAG_LIST);
             detail::encode(os, this->data->name);
