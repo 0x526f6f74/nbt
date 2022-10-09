@@ -1,5 +1,5 @@
 /**
- * Author Root (Discord: stdio.h#5797; GitHub: 0x526f6f74)
+ * Author Root (Discord: Root#5797; GitHub: 0x526f6f74)
  **/
 
 #pragma once
