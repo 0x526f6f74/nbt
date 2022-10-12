@@ -172,7 +172,7 @@ public:
 struct NBTData
 {
     TagString name;
-    std::variant<TagList, TagCompound> tags;
+    std::variant<TagCompound, TagList> tags;
 };
 
 class NBT
