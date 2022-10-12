@@ -145,6 +145,26 @@ void TagList::decode(std::istream& is)
 }
 
 template<typename T>
+const std::vector<T>& TagList::data() const requires detail::Is_tag_type<T>
+{
+    return std::get<std::vector<T>>(*this);
+}
+
+template const std::vector<TagEnd>& TagList::data() const;
+template const std::vector<TagByte>& TagList::data() const;
+template const std::vector<TagShort>& TagList::data() const;
+template const std::vector<TagInt>& TagList::data() const;
+template const std::vector<TagLong>& TagList::data() const;
+template const std::vector<TagFloat>& TagList::data() const;
+template const std::vector<TagDouble>& TagList::data() const;
+template const std::vector<TagByteArray>& TagList::data() const;
+template const std::vector<TagString>& TagList::data() const;
+template const std::vector<TagList>& TagList::data() const;
+template const std::vector<TagCompound>& TagList::data() const;
+template const std::vector<TagIntArray>& TagList::data() const;
+template const std::vector<TagLongArray>& TagList::data() const;
+
+template<typename T>
 std::vector<T> TagList::decode_vector(std::istream& is) requires detail::Is_tag_type<T>
 {
     std::vector<T> vector(detail::decode<TagInt>(is));

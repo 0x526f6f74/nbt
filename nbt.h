@@ -146,6 +146,9 @@ public:
     void encode(std::ostream& os) const;
     void decode(std::istream& is);
 
+    template<typename T>
+    const std::vector<T>& data() const requires detail::Is_tag_type<T>;
+
 private:
     template<typename T>
     std::vector<T> decode_vector(std::istream& is) requires detail::Is_tag_type<T>;
