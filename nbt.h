@@ -166,6 +166,9 @@ public:
     Tag& operator[](const TagString& key);
 
     template<typename T>
+    const std::vector<T>& data() const requires detail::Is_tag_type<T>;
+
+    template<typename T>
     T& at(int index) requires detail::Is_tag_type<T>;
 };
 

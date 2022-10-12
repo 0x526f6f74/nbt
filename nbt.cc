@@ -191,6 +191,26 @@ Tag& Tag::operator[](const TagString& key)
 }
 
 template<typename T>
+const std::vector<T>& Tag::data() const requires detail::Is_tag_type<T>
+{
+    return std::get<std::vector<T>>(std::get<TagList>(*this));
+}
+
+template const std::vector<TagEnd>& Tag::data() const;
+template const std::vector<TagByte>& Tag::data() const;
+template const std::vector<TagShort>& Tag::data() const;
+template const std::vector<TagInt>& Tag::data() const;
+template const std::vector<TagLong>& Tag::data() const;
+template const std::vector<TagFloat>& Tag::data() const;
+template const std::vector<TagDouble>& Tag::data() const;
+template const std::vector<TagByteArray>& Tag::data() const;
+template const std::vector<TagString>& Tag::data() const;
+template const std::vector<TagList>& Tag::data() const;
+template const std::vector<TagCompound>& Tag::data() const;
+template const std::vector<TagIntArray>& Tag::data() const;
+template const std::vector<TagLongArray>& Tag::data() const;
+
+template<typename T>
 T& Tag::at(int index) requires detail::Is_tag_type<T>
 {
     return std::get<std::vector<T>>(std::get<TagList>(*this))[index];
