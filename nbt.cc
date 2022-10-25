@@ -293,9 +293,9 @@ void NBT::decode(std::istream& is)
     const auto type = detail::decode<TagByte>(is);
 
     if (type == TAG_COMPOUND)
-        this->data_ = NBTData {detail::decode<TagString>(is), detail::decode<TagCompound>(is)};
+        this->data_ = Data {detail::decode<TagString>(is), detail::decode<TagCompound>(is)};
     else if (type == TAG_LIST)
-        this->data_ = NBTData {detail::decode<TagString>(is), detail::decode<TagList>(is)};
+        this->data_ = Data {detail::decode<TagString>(is), detail::decode<TagList>(is)};
     else
         throw invalid_tag_type {};
 }
@@ -310,7 +310,7 @@ const TagString& NBT::name() const
     return this->data_->name;
 }
 
-std::optional<NBTData>& NBT::data()
+std::optional<NBT::Data>& NBT::data()
 {
     return this->data_;
 }

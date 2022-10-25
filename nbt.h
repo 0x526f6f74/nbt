@@ -175,15 +175,15 @@ public:
     T& at(int index) requires detail::Is_tag_type<T>;
 };
 
-struct NBTData
-{
-    TagString name;
-    std::variant<TagCompound, TagList> tags;
-};
-
 class NBT
 {
 public:
+    struct Data
+    {
+        TagString name;
+        std::variant<TagCompound, TagList> tags;
+    };
+
     NBT(std::istream& is);
     NBT(std::istream&& is);
 
@@ -193,12 +193,12 @@ public:
     void decode(std::istream&& is);
 
     const TagString& name() const;
-    std::optional<NBTData>& data();
+    std::optional<Data>& data();
 
     Tag& operator[](const TagString& key);
 
 private:
-    std::optional<NBTData> data_;
+    std::optional<Data> data_;
 };
 
 }  // namespace nbt
