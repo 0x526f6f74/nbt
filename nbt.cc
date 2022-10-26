@@ -310,9 +310,9 @@ const TagString& NBT::name() const
     return this->data_->name;
 }
 
-std::optional<NBT::Data>& NBT::data()
+NBT::Data& NBT::data()
 {
-    return this->data_;
+    return this->data_.value();
 }
 
 Tag& NBT::operator[](const TagString& key)

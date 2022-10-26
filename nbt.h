@@ -193,7 +193,7 @@ public:
     void decode(std::istream&& is);
 
     const TagString& name() const;
-    std::optional<Data>& data();
+    Data& data();
 
     Tag& operator[](const TagString& key);
 
