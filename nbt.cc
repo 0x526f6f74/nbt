@@ -150,20 +150,6 @@ const std::vector<T>& TagList::data() const requires detail::Is_tag_type<T>
     return std::get<std::vector<T>>(*this);
 }
 
-template const std::vector<TagEnd>& TagList::data() const;
-template const std::vector<TagByte>& TagList::data() const;
-template const std::vector<TagShort>& TagList::data() const;
-template const std::vector<TagInt>& TagList::data() const;
-template const std::vector<TagLong>& TagList::data() const;
-template const std::vector<TagFloat>& TagList::data() const;
-template const std::vector<TagDouble>& TagList::data() const;
-template const std::vector<TagByteArray>& TagList::data() const;
-template const std::vector<TagString>& TagList::data() const;
-template const std::vector<TagList>& TagList::data() const;
-template const std::vector<TagCompound>& TagList::data() const;
-template const std::vector<TagIntArray>& TagList::data() const;
-template const std::vector<TagLongArray>& TagList::data() const;
-
 template<typename T>
 std::vector<T> TagList::decode_vector(std::istream& is) requires detail::Is_tag_type<T>
 {
@@ -216,39 +202,11 @@ const std::vector<T>& Tag::data() const requires detail::Is_tag_type<T>
     return std::get<std::vector<T>>(std::get<TagList>(*this));
 }
 
-template const std::vector<TagEnd>& Tag::data() const;
-template const std::vector<TagByte>& Tag::data() const;
-template const std::vector<TagShort>& Tag::data() const;
-template const std::vector<TagInt>& Tag::data() const;
-template const std::vector<TagLong>& Tag::data() const;
-template const std::vector<TagFloat>& Tag::data() const;
-template const std::vector<TagDouble>& Tag::data() const;
-template const std::vector<TagByteArray>& Tag::data() const;
-template const std::vector<TagString>& Tag::data() const;
-template const std::vector<TagList>& Tag::data() const;
-template const std::vector<TagCompound>& Tag::data() const;
-template const std::vector<TagIntArray>& Tag::data() const;
-template const std::vector<TagLongArray>& Tag::data() const;
-
 template<typename T>
 T& Tag::at(int index) requires detail::Is_tag_type<T>
 {
     return std::get<std::vector<T>>(std::get<TagList>(*this))[index];
 }
-
-template TagEnd& Tag::at(int index);
-template TagByte& Tag::at(int index);
-template TagShort& Tag::at(int index);
-template TagInt& Tag::at(int index);
-template TagLong& Tag::at(int index);
-template TagFloat& Tag::at(int index);
-template TagDouble& Tag::at(int index);
-template TagByteArray& Tag::at(int index);
-template TagString& Tag::at(int index);
-template TagList& Tag::at(int index);
-template TagCompound& Tag::at(int index);
-template TagIntArray& Tag::at(int index);
-template TagLongArray& Tag::at(int index);
 
 NBT::NBT(std::istream& is)
 {
@@ -319,5 +277,47 @@ Tag& NBT::operator[](const TagString& key)
 {
     return std::get<TagCompound>(this->data_->tags)[key];
 }
+
+template const std::vector<TagEnd>& TagList::data() const;
+template const std::vector<TagByte>& TagList::data() const;
+template const std::vector<TagShort>& TagList::data() const;
+template const std::vector<TagInt>& TagList::data() const;
+template const std::vector<TagLong>& TagList::data() const;
+template const std::vector<TagFloat>& TagList::data() const;
+template const std::vector<TagDouble>& TagList::data() const;
+template const std::vector<TagByteArray>& TagList::data() const;
+template const std::vector<TagString>& TagList::data() const;
+template const std::vector<TagList>& TagList::data() const;
+template const std::vector<TagCompound>& TagList::data() const;
+template const std::vector<TagIntArray>& TagList::data() const;
+template const std::vector<TagLongArray>& TagList::data() const;
+
+template const std::vector<TagEnd>& Tag::data() const;
+template const std::vector<TagByte>& Tag::data() const;
+template const std::vector<TagShort>& Tag::data() const;
+template const std::vector<TagInt>& Tag::data() const;
+template const std::vector<TagLong>& Tag::data() const;
+template const std::vector<TagFloat>& Tag::data() const;
+template const std::vector<TagDouble>& Tag::data() const;
+template const std::vector<TagByteArray>& Tag::data() const;
+template const std::vector<TagString>& Tag::data() const;
+template const std::vector<TagList>& Tag::data() const;
+template const std::vector<TagCompound>& Tag::data() const;
+template const std::vector<TagIntArray>& Tag::data() const;
+template const std::vector<TagLongArray>& Tag::data() const;
+
+template TagEnd& Tag::at(int index);
+template TagByte& Tag::at(int index);
+template TagShort& Tag::at(int index);
+template TagInt& Tag::at(int index);
+template TagLong& Tag::at(int index);
+template TagFloat& Tag::at(int index);
+template TagDouble& Tag::at(int index);
+template TagByteArray& Tag::at(int index);
+template TagString& Tag::at(int index);
+template TagList& Tag::at(int index);
+template TagCompound& Tag::at(int index);
+template TagIntArray& Tag::at(int index);
+template TagLongArray& Tag::at(int index);
 
 }  // namespace nbt
