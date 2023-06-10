@@ -80,6 +80,9 @@ concept Is_tag_or_tag_list = std::same_as<T, Tag> || Is_tag_list<T>;
 template<typename T>
 concept Is_tag_type = Is_tag_end<T> || Is_tag_numeric<T> || Is_tag_string<T> || Is_tag_array<T> || Is_tag_list<T> || Is_tag_compound<T>;
 
+template<typename T>
+concept Is_print = Is_tag_numeric<T> || Is_tag_string<T>;
+
 void encode(std::ostream& os, Is_tag_end auto = nullptr);
 
 void encode(std::ostream& os, Is_tag_numeric auto value);
@@ -109,6 +112,16 @@ T decode(std::istream& is);
 
 template<Is_tag_compound T>
 T decode(std::istream& is);
+
+void print(std::ostream& os, Is_tag_end auto = nullptr);
+
+void print(std::ostream& os, const Is_print auto& value);
+
+void print(std::ostream& os, const Is_tag_array auto& vector);
+
+void print(std::ostream& os, const Is_tag_list auto& value, const std::string& indent = "");
+
+void print(std::ostream& os, const Is_tag_compound auto& map, const std::string& indent = "");
 
 }  // namespace detail
 
@@ -149,6 +162,8 @@ public:
     template<typename T>
     const std::vector<T>& data() const requires detail::Is_tag_type<T>;
 
+    void print(std::ostream& os, const std::string& indent) const;
+
 private:
     template<typename T>
     std::vector<T> decode_vector(std::istream& is) requires detail::Is_tag_type<T>;
@@ -173,6 +188,8 @@ public:
 
     template<typename T>
     T& at(int index) requires detail::Is_tag_type<T>;
+
+    void print(std::ostream& os);
 };
 
 class NBT
@@ -197,8 +214,12 @@ public:
 
     Tag& operator[](const TagString& key);
 
+    void print(std::ostream& os) const;
+
 private:
     std::optional<Data> data_;
+
+    friend std::ostream& operator <<(std::ostream& os, NBT value);
 };
 
 }  // namespace nbt
